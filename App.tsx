@@ -1,118 +1,96 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SelectLanguage from './src/scenes/SelectLanguage';
+import SplashScreen from './src/scenes/SplashScreen';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  CONFIRM_PIN_SCREEN_SCENE,
+  DISCLAIMER_SCREEN_SCENE,
+  ENTER_OTP_SCREEN_SCENE,
+  ENTER_PIN_SCREEN_SCENE,
+  FORGOT_PASSWORD_SCREEN_SCENE,
+  SELECT_LANGUAGE_SCREEN_SCENE,
+  SEND_FORGOT_SUCCESS_SCREEN_SCENE,
+  SEND_OTP_SCREEN_SCENE,
+  SET_PIN_SCREEN_SCENE,
+  SET_TOUCH_ID_SCREEN_SCENE,
+  SIGNIN_SCREEN_SCENE,
+  SPLASH_SCREEN_SCENE,
+} from './src/Constants';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
+import Disclaimer from './src/scenes/Disclaimer';
+import SignIn from './src/scenes/SignIn';
+import ForgotPassword from './src/scenes/ForgotPassword';
+import SendForgotSuccess from './src/scenes/SendForgotSuccess';
+import SendOTP from './src/scenes/SendOTP';
+import EnterOTP from './src/scenes/EnterOTP';
+import SetPinCode from './src/scenes/SetPinCode';
+import ConfirmPinCode from './src/scenes/ConfirmPinCode';
+import SetTouchID from './src/scenes/SetTouchID';
+import EnterPinCode from './src/scenes/EnterPinCode';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+type RootStackParamList = {
+  ENTER_OTP_SCREEN_SCENE: {mobile: string};
+  DISCLAIMER_SCREEN_SCENE: {};
+  FORGOT_PASSWORD_SCREEN_SCENE: {};
+  SELECT_LANGUAGE_SCREEN_SCENE: {};
+  SEND_FORGOT_SUCCESS_SCREEN_SCENE: {};
+  SEND_OTP_SCREEN_SCENE: {};
+  SIGNIN_SCREEN_SCENE: {};
+  SPLASH_SCREEN_SCENE: {};
+  SET_PIN_SCREEN_SCENE: {};
+  CONFIRM_PIN_SCREEN_SCENE: {key: string};
+  SET_TOUCH_ID_SCREEN_SCENE: {};
+  ENTER_PIN_SCREEN_SCENE: {};
+};
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: false,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          <Stack.Screen name={SPLASH_SCREEN_SCENE} component={SplashScreen} />
+          <Stack.Screen
+            name={SELECT_LANGUAGE_SCREEN_SCENE}
+            component={SelectLanguage}
+          />
+          <Stack.Screen name={DISCLAIMER_SCREEN_SCENE} component={Disclaimer} />
+          <Stack.Screen name={SIGNIN_SCREEN_SCENE} component={SignIn} />
+          <Stack.Screen
+            name={FORGOT_PASSWORD_SCREEN_SCENE}
+            component={ForgotPassword}
+          />
+          <Stack.Screen
+            name={SEND_FORGOT_SUCCESS_SCREEN_SCENE}
+            component={SendForgotSuccess}
+          />
+
+          <Stack.Screen name={SEND_OTP_SCREEN_SCENE} component={SendOTP} />
+          <Stack.Screen name={ENTER_OTP_SCREEN_SCENE} component={EnterOTP} />
+          <Stack.Screen name={SET_PIN_SCREEN_SCENE} component={SetPinCode} />
+          <Stack.Screen
+            name={CONFIRM_PIN_SCREEN_SCENE}
+            component={ConfirmPinCode}
+          />
+          <Stack.Screen
+            name={SET_TOUCH_ID_SCREEN_SCENE}
+            component={SetTouchID}
+          />
+          <Stack.Screen
+            name={ENTER_PIN_SCREEN_SCENE}
+            component={EnterPinCode}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
